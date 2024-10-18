@@ -1,0 +1,67 @@
+Imputasi data adalah proses mengganti nilai yang hilang (missing values) dalam dataset dengan nilai estimasi yang sesuai. Berbagai metode telah dikembangkan untuk melakukan imputasi, mulai dari metode sederhana hingga yang lebih kompleks dan canggih. Berikut adalah beberapa **state-of-the-art (SOTA)** metode imputasi yang populer saat ini:
+
+### 1. **Simple Imputation (Metode Sederhana)**
+   - **Mean/Median Imputation**: Mengganti nilai yang hilang dengan rata-rata (mean) atau median dari kolom terkait. Ini adalah metode dasar namun masih sering digunakan untuk kasus yang sederhana.
+   - **Mode Imputation**: Untuk data kategori, nilai yang hilang digantikan dengan modus (nilai yang paling sering muncul) dari kolom tersebut.
+   - **Forward/Backward Fill (Time-Series Data)**: Untuk data urutan waktu, nilai yang hilang dapat diisi dengan nilai sebelumnya (forward fill) atau nilai berikutnya (backward fill).
+
+   **Contoh Kasus**: Penggunaan pada dataset kecil atau ketika distribusi data relatif seragam.
+
+### 2. **K-Nearest Neighbors Imputation (KNN Imputation)**
+   - **KNN Imputation**: Mengganti nilai yang hilang berdasarkan nilai dari *k* tetangga terdekat dalam ruang fitur. Ini dilakukan dengan menghitung jarak (misalnya Euclidean distance) antara baris yang memiliki nilai yang hilang dengan baris lain yang lengkap, lalu mengambil nilai rata-rata dari *k* tetangga terdekat.
+   
+   **Contoh Kasus**: Metode ini bekerja baik untuk data numerik dan kategori serta digunakan pada data yang memiliki pola atau hubungan antar fitur yang kompleks.
+
+   **Library**: Implementasi populer tersedia di **`FancyImpute`** dan **`sklearn.impute.KNNImputer`**.
+
+### 3. **Multivariate Imputation by Chained Equations (MICE)**
+   - **MICE (Multiple Imputation by Chained Equations)**: Mengganti nilai yang hilang dengan menggunakan model prediksi iteratif. Dalam metode ini, missing values diimputasi secara multivariat, di mana setiap kolom dengan missing values diprediksi berdasarkan kolom lainnya dalam dataset secara bergantian. Proses ini dilakukan secara iteratif hingga konvergensi tercapai.
+   - **Multiple Imputation**: MICE menghasilkan beberapa dataset imputasi untuk memberikan estimasi yang lebih andal terhadap ketidakpastian.
+
+   **Contoh Kasus**: Sering digunakan dalam aplikasi medis, penelitian sosial, dan survei di mana akurasi imputasi sangat penting dan missing values tersebar secara acak di berbagai kolom.
+
+   **Library**: MICE tersedia di **`Statsmodels`**, **`FancyImpute`**, dan **`sklearn.impute.IterativeImputer`**.
+
+### 4. **Matrix Factorization**
+   - **Matrix Factorization (MF)**: Metode ini populer untuk data tabular atau yang menyerupai data matriks (misalnya dalam rekomendasi produk). Metode ini melakukan dekomposisi matriks dengan missing values menjadi dua matriks yang lebih kecil, yang kemudian dikalikan kembali untuk merekonstruksi nilai yang hilang.
+   - **Singular Value Decomposition (SVD)**: SVD digunakan untuk mengimputasi nilai hilang dengan memanfaatkan struktur laten dari data. Metode ini efektif untuk data yang memiliki pola matriks (misalnya data pengguna-item dalam rekomendasi produk).
+
+   **Contoh Kasus**: Digunakan dalam sistem rekomendasi (seperti Netflix) di mana kita ingin mengimputasi nilai-nilai yang hilang dari preferensi pengguna terhadap berbagai item.
+
+   **Library**: Implementasi tersedia di **`FancyImpute`** dan **`Surprise`**.
+
+### 5. **MissForest (Random Forest Imputation)**
+   - **MissForest**: Menggunakan model Random Forest untuk mengimputasi nilai yang hilang. Random Forest adalah model ensemble berbasis pohon keputusan yang dapat digunakan untuk memprediksi nilai yang hilang dengan memperlakukan kolom lain sebagai fitur dan missing values sebagai target prediksi. Ini merupakan metode non-parametrik yang mampu menangani data numerik dan kategoris.
+   
+   **Contoh Kasus**: Sangat efektif untuk data tabular dengan kombinasi fitur numerik dan kategoris, terutama ketika pola hubungan antar fitur cukup kompleks.
+
+   **Library**: Implementasi populer tersedia di **`MissForest` (Python)** dan **`R`**.
+
+### 6. **Bayesian Imputation**
+   - **Bayesian Regression Imputation**: Nilai yang hilang diimputasi dengan menggunakan estimasi yang dihasilkan dari distribusi posterior berdasarkan model Bayesian. Proses ini mempertimbangkan ketidakpastian dalam estimasi imputasi dengan menggunakan probabilitas kondisional untuk menghitung nilai yang hilang.
+   - **Bayesian Ridge Imputation**: Menggunakan regresi Bayesian Ridge untuk memperkirakan nilai hilang dengan menambahkan distribusi prior dan posterior ke dalam proses regresi.
+
+   **Contoh Kasus**: Digunakan dalam domain yang memerlukan estimasi yang sangat hati-hati terhadap nilai yang hilang, seperti ekonomi, statistik medis, atau survei.
+
+   **Library**: Tersedia dalam **`sklearn.impute.BayesianRidge`**.
+
+### 7. **Deep Learning-Based Imputation**
+   - **Autoencoders**: Digunakan untuk mempelajari representasi latar belakang dari data. Autoencoders dapat digunakan untuk mengimputasi nilai yang hilang dengan melatih jaringan untuk mengkodekan data yang sudah lengkap, lalu mendekodekannya kembali, memprediksi nilai yang hilang berdasarkan fitur lain dalam dataset.
+   - **Generative Adversarial Networks (GANs)**: Dalam pendekatan ini, GANs dilatih untuk meniru distribusi data dan mengimputasi nilai hilang dengan menghasilkan nilai yang konsisten berdasarkan data yang ada. **GAIN (Generative Adversarial Imputation Nets)** adalah salah satu metode SOTA yang berbasis GANs untuk imputasi missing values.
+
+   **Contoh Kasus**: Digunakan untuk data yang tidak terstruktur seperti gambar, teks, atau data kompleks dengan banyak missing values. Juga mulai diterapkan dalam domain keuangan dan kesehatan.
+
+   **Library**: **`GAIN`** tersedia di berbagai implementasi berbasis TensorFlow atau PyTorch.
+
+### 8. **Multiple Imputation via Gaussian Copulas (MI-Copulas)**
+   - **Gaussian Copulas**: Pendekatan ini menggunakan copulas Gaussian untuk memodelkan hubungan antar variabel yang mungkin tidak berdistribusi normal. Gaussian Copulas memungkinkan pengisian missing values dengan cara yang mempertahankan struktur distribusi dari data asli.
+   
+   **Contoh Kasus**: Sering digunakan untuk data yang memiliki dependensi kompleks dan tidak normal antar fitur, seperti di industri keuangan atau biomedis.
+
+   **Library**: Implementasi tersedia di **`copulas`** library dari SDV (Synthetic Data Vault).
+
+---
+
+### Ringkasan
+Metode-metode SOTA untuk imputasi missing values mencakup berbagai pendekatan, mulai dari metode sederhana seperti imputasi rata-rata hingga metode berbasis model kompleks seperti **MissForest** dan **Deep Learning (Autoencoders, GANs)**. Pemilihan metode tergantung pada karakteristik data, tujuan analisis, dan jumlah missing values. Beberapa metode unggul untuk data numerik dan tabular, sementara yang lain lebih cocok untuk data tak terstruktur seperti gambar dan teks.
+
